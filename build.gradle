@@ -2,6 +2,8 @@ buildscript {
     ext {
         compose_version = '1.7.0-beta07'
         serialization_version = '1.7.1'
+        retrofit_version = '2.11.0'
+        okhttp_version = '5.0.0-alpha.14'
     }
 }
 
