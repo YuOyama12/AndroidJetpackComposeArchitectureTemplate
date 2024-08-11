@@ -2,11 +2,17 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.0'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android' version '2.52'
 }
 
 android {
     namespace 'com.example.network'
     compileSdk 34
+
+    buildFeatures {
+        buildConfig true
+    }
 
     defaultConfig {
         minSdk 24
@@ -16,9 +22,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            debuggable true
+            //デバッグ用のAPIのURLをここで設定する。
+            buildConfigField'String', 'API_BASE_URL', '"http://dev.example.com/api/"'
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //リリースビルド用のAPIのURLをここで設定する。
+            buildConfigField 'String', 'API_BASE_URL', '"http://example.com/api/"'
         }
     }
     compileOptions {
@@ -47,5 +61,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-kotlinx-serialization:$retrofit_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
 }
