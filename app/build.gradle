@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.androidarchitecturetemplate"
-        minSdk 21
+        minSdk 24
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -49,6 +49,9 @@ composeCompiler {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
+    implementation(project(":core:designsystem"))
+
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
