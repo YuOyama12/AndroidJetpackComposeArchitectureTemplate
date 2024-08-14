@@ -1,0 +1,67 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.0'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.example.network'
+    compileSdk 34
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    defaultConfig {
+        minSdk 24
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            //デバッグ用のAPIのURLをここで設定する。
+            buildConfigField'String', 'API_BASE_URL', '"http://dev.example.com/api/"'
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //リリースビルド用のAPIのURLをここで設定する。
+            buildConfigField 'String', 'API_BASE_URL', '"http://example.com/api/"'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-kotlinx-serialization:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+}
