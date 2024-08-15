@@ -1,11 +1,31 @@
 package com.example.feature
 
-sealed class NavRouter(val route: String) {
+import androidx.annotation.StringRes
+
+sealed class NavRouter(
+    val route: String,
+    @StringRes val titleId: Int
+) {
+    companion object {
+        private val entries = NavRouter::class.nestedClasses.mapNotNull {
+            it.objectInstance as? NavRouter
+        }
+
+        fun findNavRouterByRouteName(route: String?): NavRouter? =
+            entries.find { it.route == route }
+    }
+
     sealed class Argument(val name: String) {}
 
-    data object Home : NavRouter("home")
+    data object Home : NavRouter(
+        route = "home",
+        titleId = R.string.home
+    )
 
-    data object Sub : NavRouter("sub")
+    data object Sub : NavRouter(
+        route = "sub",
+        titleId = R.string.sub
+    )
 }
 
 
