@@ -6,33 +6,29 @@ sealed class NavRouter(val route: String) {
     data object Home : NavRouter("home")
 
     data object Sub : NavRouter("sub")
+}
 
-    private fun String.createNavRouterWithArguments(args: List<Argument>): String {
-        var route = "${this}/"
 
-        args.forEach { arg ->
-            route += "{${arg.name}}"
+private fun String.createNavRouterWithArguments(args: List<NavRouter.Argument>): String {
+    var result = "${this}/"
 
-            if (arg != args.last()) {
-                route += "/"
-            }
+    args.forEach { arg ->
+        result += "{${arg.name}}"
+
+        if (arg != args.last()) {
+            result += "/"
         }
-
-        return route
     }
 
-    private fun NavRouter.createRouteWithArguments(args: Map<Argument, Any>): String {
-        var route = "${this.route}/"
+    return result
+}
 
+private fun NavRouter.createRouteWithArguments(args: Map<NavRouter.Argument, Any>): String {
+    var result = this.route
 
-        args.forEach { arg ->
-            route += arg.value.toString()
-
-            if (arg.value != args.values.last()) {
-                route += "/"
-            }
-        }
-
-        return route
+    args.forEach { arg ->
+        result = result.replace("{${arg.key.name}}", arg.value.toString())
     }
+
+    return result
 }
