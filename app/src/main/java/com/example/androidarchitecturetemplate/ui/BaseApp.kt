@@ -3,6 +3,8 @@ package com.example.androidarchitecturetemplate.ui
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -19,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.androidarchitecturetemplate.navigation.BaseNavHost
+import com.example.androidarchitecturetemplate.navigation.TopLevelDestinationType
 import com.example.feature.NavRouter
 
 @Composable
@@ -39,11 +42,17 @@ fun BaseApp(
             TopAppBar(
                 title = {
                     Text(
-                        text = NavRouter.findNavRouterByRouteName(
-                            appState.currentDestination?.route
-                        )?.titleId?.let {
-                            stringResource(id = it)
-                        } ?: ""
+                        text = if (appState.currentTopLevelDestination != null) {
+                            appState.currentTopLevelDestination?.titleId?.let {
+                                stringResource(id = it)
+                            } ?: ""
+                        } else {
+                            NavRouter.findNavRouterByRouteName(
+                                appState.currentDestination?.route
+                            )?.titleId?.let {
+                                stringResource(id = it)
+                            } ?: ""
+                        }
                     )
                 },
                 navigationIcon = if (hasPreviousBackStackEntry) {
@@ -60,7 +69,35 @@ fun BaseApp(
                 } else null
             )
         },
-        bottomBar = {}
+        bottomBar = {
+            if (
+                appState.currentTopLevelDestination == null
+                || TopLevelDestinationType.entries.isEmpty()
+                ) {
+                return@Scaffold
+            }
+
+            BottomNavigation {
+                TopLevelDestinationType.entries.forEach { destination->
+                    val selected = appState.currentTopLevelDestination == destination
+                    BottomNavigationItem(
+                        selected = selected,
+                        onClick = { appState.navigateToTopLevelDestination(destination) },
+                        icon = {
+                            Icon(
+                                imageVector =
+                                if (selected) destination.selectedIcon
+                                else destination.unselectedIcon,
+                                contentDescription = null
+                            )
+                        },
+                        label = {
+                            Text(text = stringResource(destination.titleId))
+                        }
+                    )
+                }
+            }
+        }
     ) { innerPadding ->
           Box(
               modifier = Modifier
