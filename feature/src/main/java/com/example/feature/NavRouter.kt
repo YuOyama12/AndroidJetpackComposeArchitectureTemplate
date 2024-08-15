@@ -7,7 +7,8 @@ import androidx.annotation.StringRes
  */
 sealed class NavRouter(
     val route: String,
-    @StringRes val titleId: Int
+    @StringRes val titleId: Int,
+    val showBackButton: Boolean = true
 ) {
     companion object {
         private val entries = NavRouter::class.nestedClasses.mapNotNull {

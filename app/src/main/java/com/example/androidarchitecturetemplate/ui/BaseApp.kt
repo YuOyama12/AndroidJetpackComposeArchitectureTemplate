@@ -29,13 +29,6 @@ fun BaseApp(
     modifier: Modifier = Modifier,
     appState: BaseAppState
 ) {
-    var hasPreviousBackStackEntry: Boolean by remember { mutableStateOf(false) }
-
-    LaunchedEffect(appState.currentDestination) {
-        hasPreviousBackStackEntry =
-            appState.navController.previousBackStackEntry != null
-    }
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -55,7 +48,12 @@ fun BaseApp(
                         }
                     )
                 },
-                navigationIcon = if (hasPreviousBackStackEntry) {
+                navigationIcon =
+                if (
+                    appState.currentTopLevelDestination == null
+                    || NavRouter.findNavRouterByRouteName(appState.currentDestination?.route)
+                        ?.showBackButton == true
+                    ) {
                     {
                         IconButton(
                             onClick = { appState.navController.popBackStack() }
