@@ -10,7 +10,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.androidarchitecturetemplate.ui.BaseApp
+import com.example.androidarchitecturetemplate.ui.rememberBaseAppState
 import com.example.designsystem.theme.AndroidArchitectureTemplateTheme
+import com.example.feature.home.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,27 +22,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AndroidArchitectureTemplateTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    val appState = rememberBaseAppState()
+
+                   BaseApp(appState = appState)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    com.example.designsystem.theme.AndroidArchitectureTemplateTheme {
-        Greeting("Android")
     }
 }
