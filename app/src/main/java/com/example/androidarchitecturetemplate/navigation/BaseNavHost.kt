@@ -2,12 +2,12 @@ package com.example.androidarchitecturetemplate.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.androidarchitecturetemplate.ui.BaseAppState
 import com.example.feature.NavRouter
 import com.example.feature.home.HomeScreen
+import com.example.feature.sub.SubScreen
 
 @Composable
 fun BaseNavHost(
@@ -22,7 +22,12 @@ fun BaseNavHost(
         startDestination = NavRouter.Home.route
     ) {
         composable(NavRouter.Home.route) {
-            HomeScreen()
+            HomeScreen(
+                navToSub = { navController.navigate(NavRouter.Sub.route) }
+            )
+        }
+        composable(NavRouter.Sub.route) {
+            SubScreen()
         }
     }
 }

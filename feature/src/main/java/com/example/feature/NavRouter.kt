@@ -5,6 +5,8 @@ sealed class NavRouter(val route: String) {
 
     data object Home : NavRouter("home")
 
+    data object Sub : NavRouter("sub")
+
     private fun String.createNavRouterWithArguments(args: List<Argument>): String {
         var route = "${this}/"
 
