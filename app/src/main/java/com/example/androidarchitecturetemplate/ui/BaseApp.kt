@@ -13,13 +13,9 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination
 import com.example.androidarchitecturetemplate.navigation.BaseNavHost
 import com.example.androidarchitecturetemplate.navigation.TopLevelDestinationType
 import com.example.feature.NavRouter
@@ -69,7 +65,8 @@ fun BaseApp(
         },
         bottomBar = {
             if (
-                appState.currentTopLevelDestination == null
+                (appState.currentTopLevelDestination == null &&
+                !appState.currentDestination.isInTopLevelDestination())
                 || TopLevelDestinationType.entries.isEmpty()
                 ) {
                 return@Scaffold
@@ -106,3 +103,13 @@ fun BaseApp(
           }
     }
 }
+
+private fun NavDestination?.isInTopLevelDestination(): Boolean =
+    // 画面遷移時に一瞬routeがnullを返し、bottomNavigationBarが
+    // 点滅するため、null時にはtrueとみなす。
+    this?.route?.let { currentRoute ->
+        TopLevelDestinationType.entries.any {
+            it.route == currentRoute
+        }
+    } ?: true
+
