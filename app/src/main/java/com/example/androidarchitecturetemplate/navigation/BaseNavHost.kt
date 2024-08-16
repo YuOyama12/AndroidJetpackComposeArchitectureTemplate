@@ -19,9 +19,9 @@ fun BaseNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = NavRouter.Home.route
+        startDestination = TopLevelDestinationType.Home.route
     ) {
-        composable(NavRouter.Home.route) {
+        composable(TopLevelDestinationType.Home.route) {
             HomeScreen(
                 navToSub = { navController.navigate(NavRouter.Sub.route) }
             )

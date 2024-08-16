@@ -2,9 +2,13 @@ package com.example.feature
 
 import androidx.annotation.StringRes
 
+/**
+ * TopLevelDestination以外の遷移先をまとめたクラス
+ */
 sealed class NavRouter(
     val route: String,
-    @StringRes val titleId: Int
+    @StringRes val titleId: Int,
+    val showBackButton: Boolean = true
 ) {
     companion object {
         private val entries = NavRouter::class.nestedClasses.mapNotNull {
@@ -16,11 +20,6 @@ sealed class NavRouter(
     }
 
     sealed class Argument(val name: String) {}
-
-    data object Home : NavRouter(
-        route = "home",
-        titleId = R.string.home
-    )
 
     data object Sub : NavRouter(
         route = "sub",
