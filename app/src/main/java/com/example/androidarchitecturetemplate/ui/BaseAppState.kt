@@ -11,20 +11,27 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.example.androidarchitecturetemplate.navigation.TopLevelDestinationType
+import com.example.data.util.NetworkMonitor
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 @Composable
 fun rememberBaseAppState(
     navController: NavHostController = rememberNavController(),
-    coroutineScope: CoroutineScope = rememberCoroutineScope()
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    networkMonitor: NetworkMonitor
 ): BaseAppState {
     return remember(
         navController,
-        coroutineScope
+        coroutineScope,
+        networkMonitor
     ) {
         BaseAppState(
             navController = navController,
-            coroutineScope = coroutineScope
+            coroutineScope = coroutineScope,
+            networkMonitor = networkMonitor
         )
     }
 }
@@ -32,7 +39,8 @@ fun rememberBaseAppState(
 @Stable
 class BaseAppState(
     val navController: NavHostController,
-    coroutineScope: CoroutineScope
+    val coroutineScope: CoroutineScope,
+    networkMonitor: NetworkMonitor,
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -42,6 +50,14 @@ class BaseAppState(
         @Composable get() = TopLevelDestinationType.entries.find {
             it.route == currentDestination?.route
         }
+
+    val isOffline = networkMonitor.isOnline
+        .map(Boolean::not)
+        .stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = false,
+        )
 
     fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestinationType) {
         val topLevelNavOptions = navOptions {
