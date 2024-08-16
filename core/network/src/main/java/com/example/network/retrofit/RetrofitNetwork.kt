@@ -10,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class RetrofitNetwork @Inject constructor(
+class RetrofitNetwork @Inject constructor(
     private val networkJson: Json,
     private val okhttpCallFactory: OkHttpClient,
 ) {
@@ -22,7 +22,5 @@ internal class RetrofitNetwork @Inject constructor(
                 networkJson.asConverterFactory("application/json".toMediaType())
             ).build()
 
-    val apiService = retrofit.create(IApiService::class.java)
-
-
+    val apiService: IApiService = retrofit.create(IApiService::class.java)
 }
