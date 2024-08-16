@@ -1,4 +1,4 @@
-package com.example.network.response
+package com.example.model.response
 
 import kotlinx.serialization.Serializable
 
