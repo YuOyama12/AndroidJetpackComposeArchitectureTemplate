@@ -16,6 +16,7 @@ import com.example.data.util.NetworkMonitor
 import com.example.designsystem.theme.AndroidArchitectureTemplateTheme
 import com.example.feature.home.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -25,6 +26,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.plant(Timber.DebugTree())
+
         setContent {
             AndroidArchitectureTemplateTheme {
                 Surface(
