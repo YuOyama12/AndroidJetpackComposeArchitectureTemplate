@@ -27,6 +27,7 @@ internal object NetworkModule {
         val logging = HttpLoggingInterceptor {
             Log.d("OkHttp", it)
         }
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
         return OkHttpClient.Builder()
             .addInterceptor(logging)
