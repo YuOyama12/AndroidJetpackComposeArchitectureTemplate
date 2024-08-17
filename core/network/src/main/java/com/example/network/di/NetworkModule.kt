@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import timber.log.Timber
 import javax.inject.Singleton
 
 @Module
@@ -25,8 +26,9 @@ internal object NetworkModule {
     @Singleton
     fun okHttpCallFactory(): OkHttpClient {
         val logging = HttpLoggingInterceptor {
-            Log.d("OkHttp", it)
+            Timber.tag("OkHttp").d(it)
         }
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
         return OkHttpClient.Builder()
             .addInterceptor(logging)

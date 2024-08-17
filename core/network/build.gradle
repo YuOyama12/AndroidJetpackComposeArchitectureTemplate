@@ -23,14 +23,14 @@ android {
     buildTypes {
         debug {
             debuggable true
-            //デバッグ用のAPIのURLをここで設定する。
+            //開発環境用のAPIのURLをここで設定する。
             buildConfigField'String', 'API_BASE_URL', '"http://dev.example.com/api/"'
         }
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            //リリースビルド用のAPIのURLをここで設定する。
+            //本番環境用のAPIのURLをここで設定する。
             buildConfigField 'String', 'API_BASE_URL', '"http://example.com/api/"'
         }
     }
@@ -54,12 +54,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 
+    commonDependencies.forEach { _, value -> implementation value }
+
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-kotlinx-serialization:$retrofit_version"
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api "com.squareup.retrofit2:converter-kotlinx-serialization:$retrofit_version"
+    api "com.squareup.okhttp3:okhttp:$okhttp_version"
+    api "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
