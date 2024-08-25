@@ -45,4 +45,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 
     commonDependencies.forEach { _, value -> implementation value }
+
+    implementation "io.coil-kt:coil-compose:$coil_version"
 }
